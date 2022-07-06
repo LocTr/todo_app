@@ -9,7 +9,6 @@ class TabViewCubit extends Cubit<TabViewState> {
   // void setTab(HomeTab newTab) => emit(TabViewState(currentTab: newTab));
 
   void setTab(HomeTab newTab) {
-    print(newTab.name);
     emit(TabViewState(currentTab: newTab));
   }
 }
