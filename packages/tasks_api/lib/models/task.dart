@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 class Task extends Equatable {
   const Task({
-    required this.id,
+    this.id = 0,
     required this.title,
     this.body = '',
     this.isDone = false,

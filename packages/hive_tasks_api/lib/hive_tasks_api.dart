@@ -1,5 +1,7 @@
 library hive_tasks_api;
 
+import 'dart:async';
+
 import 'package:hive/hive.dart';
 import 'package:tasks_api/tasks_api.dart';
 
@@ -28,6 +30,12 @@ class HiveTasksApi extends TasksApi {
       list.add(task);
     }
     return list;
+  }
+
+  @override
+  Stream<List<Task>> getTasks() {
+    // TODO: implement getTasks
+    throw UnimplementedError();
   }
 
   @override

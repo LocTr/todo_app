@@ -10,12 +10,36 @@ class AddTaskBloc extends Bloc<AddTaskEvent, AddTaskState> {
     required TasksRepository tasksRepository,
   })  : _tasksRepository = tasksRepository,
         super(
-          const AddTaskState(task: Task(id: 0, title: '')),
+          const AddTaskState(title: '', body: ''),
         ) {
-    on<AddTaskEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+    on<AddTaskTitleChanged>(_onTitleChanged);
+    on<AddTaskBodyChanged>(_onBodyChanged);
+    on<AddTaskSubmitted>(_onSubmitted);
   }
 
   final TasksRepository _tasksRepository;
+
+  void _onTitleChanged(
+    AddTaskTitleChanged event,
+    Emitter<AddTaskState> emit,
+  ) {
+    emit(state.copyWith(title: event.title));
+  }
+
+  void _onBodyChanged(
+    AddTaskBodyChanged event,
+    Emitter<AddTaskState> emit,
+  ) {
+    emit(state.copyWith(body: event.body));
+  }
+
+  Future<void> _onSubmitted(
+      AddTaskSubmitted event, Emitter<AddTaskState> emit) async {
+    final task = Task(
+      title: state.title,
+      body: state.body,
+      isDone: false,
+    );
+    await _tasksRepository.saveTask(task);
+  }
 }

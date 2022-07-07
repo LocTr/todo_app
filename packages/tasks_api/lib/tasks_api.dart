@@ -7,6 +7,8 @@ export 'models/task.dart';
 abstract class TasksApi {
   const TasksApi();
 
+  Stream<List<Task>> getTasks();
+
   Future<List<Task>> getTask();
 
   Future<void> saveTask(Task task);
