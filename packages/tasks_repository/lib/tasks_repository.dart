@@ -2,6 +2,8 @@ library tasks_repository;
 
 import 'package:tasks_api/tasks_api.dart';
 
+export 'package:tasks_api/tasks_api.dart' show Task;
+
 /// A Calculator.
 class TasksRepository {
   const TasksRepository({
@@ -27,7 +29,7 @@ class TasksRepository {
     return;
   }
 
-  Future<void> deleteTask(String id) async {
+  Future<void> deleteTask(int id) async {
     _tasksApi.deleteTask(id);
     return;
   }

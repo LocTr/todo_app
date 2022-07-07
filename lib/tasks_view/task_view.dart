@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/model/task.dart';
 import 'package:todo_app/widget/task_card.dart';
 
-class TaskScreen extends StatelessWidget {
-  const TaskScreen({Key? key}) : super(key: key);
+class TaskView extends StatelessWidget {
+  const TaskView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

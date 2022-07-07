@@ -3,35 +3,53 @@ library hive_tasks_api;
 import 'package:hive/hive.dart';
 import 'package:tasks_api/tasks_api.dart';
 
+enum HiveTaskData {
+  id,
+  title,
+  body,
+  isDone,
+}
+
 class HiveTasksApi extends TasksApi {
   HiveTasksApi({required this.dataBox});
 
-  final Box<Task> dataBox;
+  final Box dataBox;
 
   @override
   Future<List<Task>> getTask() async {
-    return dataBox.values.toList();
+    List<Task> list = [];
+
+    for (var element in dataBox.values) {
+      Task task = Task(
+          id: element[HiveTaskData.id.index],
+          title: element[HiveTaskData.title.index],
+          body: element[HiveTaskData.body.index],
+          isDone: element[HiveTaskData.isDone.index]);
+      list.add(task);
+    }
+    return list;
   }
 
   @override
   Future<void> clearCompleted() async {
-    dataBox.toMap().forEach((key, value) async {
-      if (value.isDone == true) {
-        await dataBox.delete(key);
+    for (var element in dataBox.values) {
+      if (element[HiveTaskData.isDone.index] == true) {
+        dataBox.deleteAt(element[HiveTaskData.id.index]);
       }
-    });
+    }
     return;
   }
 
   @override
-  Future<void> deleteTask(String id) async {
-    await dataBox.delete(id);
+  Future<void> deleteTask(int id) async {
+    await dataBox.deleteAt(id);
     return;
   }
 
   @override
   Future<void> saveTask(Task task) async {
-    await dataBox.add(task);
+    final int id = dataBox.length;
+    await dataBox.add(task.copyWith(id: id));
     return;
   }
 }

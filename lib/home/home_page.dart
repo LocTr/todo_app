@@ -1,8 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo_app/bloc/tab_view_cubit/tab_view_cubit.dart';
-import 'package:todo_app/screen/add_task_dialog.dart';
-import 'package:todo_app/screen/task_screen.dart';
+import 'package:todo_app/new_task/add_task_dialog.dart';
+import 'package:todo_app/tasks_view/task_view.dart';
+
+import 'cubit/tab_view_cubit.dart';
+
+class HomePage extends StatelessWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => TabViewCubit(),
+      child: const HomeView(),
+    );
+  }
+}
 
 class HomeView extends StatelessWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -23,7 +36,7 @@ class HomeView extends StatelessWidget {
     }
 
     return Scaffold(
-      body: const TaskScreen(),
+      body: const TaskView(),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Theme.of(context).primaryColor,
         unselectedItemColor: Theme.of(context).disabledColor,

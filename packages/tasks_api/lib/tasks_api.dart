@@ -11,7 +11,7 @@ abstract class TasksApi {
 
   Future<void> saveTask(Task task);
 
-  Future<void> deleteTask(String id);
+  Future<void> deleteTask(int id);
 
   Future<void> clearCompleted();
 }
