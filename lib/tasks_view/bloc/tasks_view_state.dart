@@ -1,10 +1,16 @@
 part of 'tasks_view_bloc.dart';
 
-abstract class TasksViewState extends Equatable {
-  const TasksViewState();
-  
-  @override
-  List<Object> get props => [];
-}
+class TasksViewState extends Equatable {
+  const TasksViewState({
+    this.tasks = const [],
+    this.filter = TasksViewFilter.all,
+  });
 
-class TasksViewInitial extends TasksViewState {}
+  final List<Task> tasks;
+  final TasksViewFilter filter;
+
+  Iterable<Task> get filteredTasks => filter.applyAll(tasks);
+
+  @override
+  List<Object> get props => [tasks, filter];
+}

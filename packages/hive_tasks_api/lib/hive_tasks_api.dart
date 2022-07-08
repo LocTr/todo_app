@@ -20,6 +20,7 @@ class HiveTasksApi extends TasksApi {
   @override
   Future<List<Task>> getTask() async {
     List<Task> list = [];
+    print('getting tasks');
 
     for (var element in dataBox.values) {
       Task task = Task(
@@ -28,6 +29,7 @@ class HiveTasksApi extends TasksApi {
           body: element[HiveTaskData.body.index],
           isDone: element[HiveTaskData.isDone.index]);
       list.add(task);
+      print('task name ' + task.title);
     }
     return list;
   }
@@ -57,7 +59,12 @@ class HiveTasksApi extends TasksApi {
   @override
   Future<void> saveTask(Task task) async {
     final int id = dataBox.length;
-    await dataBox.add(task.copyWith(id: id));
+    await dataBox.add([
+      id,
+      task.title,
+      task.body,
+      task.isDone,
+    ]);
     return;
   }
 }

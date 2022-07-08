@@ -23,6 +23,7 @@ class AddTaskBloc extends Bloc<AddTaskEvent, AddTaskState> {
     AddTaskTitleChanged event,
     Emitter<AddTaskState> emit,
   ) {
+    print('event: ' + event.title);
     emit(state.copyWith(title: event.title));
   }
 
@@ -40,6 +41,7 @@ class AddTaskBloc extends Bloc<AddTaskEvent, AddTaskState> {
       body: state.body,
       isDone: false,
     );
+    print('title:' + task.title);
     await _tasksRepository.saveTask(task);
   }
 }

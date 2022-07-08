@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo_app/new_task/add_task_dialog.dart';
-import 'package:todo_app/tasks_view/task_view.dart';
+import 'package:tasks_repository/tasks_repository.dart';
+import 'package:todo_app/new_task/add_task_page.dart';
+import 'package:todo_app/new_task/bloc/add_task_bloc.dart';
+import 'package:todo_app/tasks_view/bloc/tasks_view_bloc.dart';
+import 'package:todo_app/tasks_view/task_page.dart';
 
 import 'cubit/tab_view_cubit.dart';
 
@@ -28,7 +31,11 @@ class HomeView extends StatelessWidget {
             isScrollControlled: true,
             context: context,
             builder: (context) {
-              return const AddTaskDialog();
+              return BlocProvider(
+                create: (context) => AddTaskBloc(
+                    tasksRepository: context.read<TasksRepository>()),
+                child: const AddTaskDialog(),
+              );
             });
       } else {
         context.read<TabViewCubit>().setTab(HomeTab.values[index]);
@@ -36,7 +43,7 @@ class HomeView extends StatelessWidget {
     }
 
     return Scaffold(
-      body: const TaskView(),
+      body: const TasksPage(),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Theme.of(context).primaryColor,
         unselectedItemColor: Theme.of(context).disabledColor,
