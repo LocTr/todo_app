@@ -19,8 +19,8 @@ class TasksViewBloc extends Bloc<TasksViewEvent, TasksViewState> {
     TasksViewLoadTask event,
     Emitter<TasksViewState> emit,
   ) async {
-    print('loading tasks');
-    _tasksRepository.getAllTasks();
+    List<Task> tasks = await _tasksRepository.getAllTasks();
+    emit(TasksViewState(tasks: tasks));
   }
 
   // Future<void> _onTasksViewCompleteToggled(

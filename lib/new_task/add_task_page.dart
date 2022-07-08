@@ -21,11 +21,6 @@ class AddTaskDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController titleTxtController = TextEditingController();
-
-    final TextEditingController bodyTxtController = TextEditingController()
-      ..addListener(() {});
-
     return Padding(
       padding: EdgeInsets.only(
           left: 8,
@@ -40,7 +35,6 @@ class AddTaskDialog extends StatelessWidget {
             onChanged: (value) {
               context.read<AddTaskBloc>().add(AddTaskTitleChanged(value));
             },
-            controller: titleTxtController,
             autofocus: true,
             decoration: const InputDecoration(
                 hintText: 'New task', border: InputBorder.none),
@@ -53,6 +47,7 @@ class AddTaskDialog extends StatelessWidget {
           TextButton(
               onPressed: () {
                 context.read<AddTaskBloc>().add(const AddTaskSubmitted());
+                Navigator.pop(context, true);
               },
               child: const Text('SAVE')),
           const SizedBox(height: 8),

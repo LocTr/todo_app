@@ -10,12 +10,13 @@ class TasksPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => TasksViewBloc(
-        tasksRepository: context.read<TasksRepository>(),
-      )..add(const TasksViewLoadTask()),
-      child: const TasksView(),
-    );
+    // return BlocProvider(
+    //   create: (context) => TasksViewBloc(
+    //     tasksRepository: context.read<TasksRepository>(),
+    //   )..add(const TasksViewLoadTask()),
+    //   child: const TasksView(),
+    // );
+    return const TasksView();
   }
 }
 
@@ -24,43 +25,22 @@ class TasksView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('rendering task view');
-    // List<Task> tasks =
-    //     context.read<TasksViewBloc>().state.filteredTasks.toList();
-    // if (tasks.isNotEmpty) return _taskList(tasks);
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          const Icon(Icons.close),
-          const Text(
-            'There is no task yet',
-          ),
-          TextButton(
-              onPressed: () {
-                context.read<TasksViewBloc>().add(const TasksViewLoadTask());
-              },
-              child: Text('load data')),
-        ],
-      ),
-    );
+    List<Task> tasks =
+        context.watch<TasksViewBloc>().state.filteredTasks.toList();
+    if (tasks.isNotEmpty) return _taskList(tasks);
+    return _noTaskScreen();
   }
 }
 
-Widget _noTaskScreen(context) {
+Widget _noTaskScreen() {
   return Center(
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        const Icon(Icons.close),
-        const Text(
+      children: const <Widget>[
+        Icon(Icons.close),
+        Text(
           'There is no task yet',
         ),
-        TextButton(
-            onPressed: () {
-              context.read<TasksViewBloc>().add(const TasksViewLoadTask());
-            },
-            child: Text('load data')),
       ],
     ),
   );
