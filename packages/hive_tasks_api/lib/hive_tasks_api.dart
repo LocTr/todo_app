@@ -18,9 +18,8 @@ class HiveTasksApi extends TasksApi {
   final Box dataBox;
 
   @override
-  Future<List<Task>> getTask() async {
+  Future<List<Task>> getTasks() async {
     List<Task> list = [];
-    print('getting tasks');
 
     for (var element in dataBox.values) {
       Task task = Task(
@@ -29,15 +28,8 @@ class HiveTasksApi extends TasksApi {
           body: element[HiveTaskData.body.index],
           isDone: element[HiveTaskData.isDone.index]);
       list.add(task);
-      print('task name ' + task.title);
     }
     return list;
-  }
-
-  @override
-  Stream<List<Task>> getTasks() {
-    // TODO: implement getTasks
-    throw UnimplementedError();
   }
 
   @override
@@ -57,7 +49,7 @@ class HiveTasksApi extends TasksApi {
   }
 
   @override
-  Future<void> saveTask(Task task) async {
+  Future<void> newTask(Task task) async {
     final int id = dataBox.length;
     await dataBox.add([
       id,
@@ -66,5 +58,27 @@ class HiveTasksApi extends TasksApi {
       task.isDone,
     ]);
     return;
+  }
+
+  @override
+  Future<void> updateTask(Task task) async {
+    await dataBox.putAt(task.id, [
+      task.id,
+      task.title,
+      task.body,
+      task.isDone,
+    ]);
+    return;
+  }
+
+  @override
+  Stream<List<Task>> getTasksStream() {
+    // TODO: implement getTasksStream
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> deleteAllTask() async {
+    await dataBox.clear();
   }
 }

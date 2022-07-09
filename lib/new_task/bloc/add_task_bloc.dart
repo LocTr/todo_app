@@ -23,8 +23,17 @@ class AddTaskBloc extends Bloc<AddTaskEvent, AddTaskState> {
     AddTaskTitleChanged event,
     Emitter<AddTaskState> emit,
   ) {
-    print('event: ' + event.title);
-    emit(state.copyWith(title: event.title));
+    if (event.title.isEmpty) {
+      emit(state.copyWith(
+        title: event.title,
+        status: AddTaskStatus.invalid,
+      ));
+    } else {
+      emit(state.copyWith(
+        title: event.title,
+        status: AddTaskStatus.valid,
+      ));
+    }
   }
 
   void _onBodyChanged(
@@ -42,7 +51,7 @@ class AddTaskBloc extends Bloc<AddTaskEvent, AddTaskState> {
       isDone: false,
     );
     try {
-      await _tasksRepository.saveTask(task);
+      await _tasksRepository.newTask(task);
       emit(state.copyWith(status: AddTaskStatus.success));
     } catch (e) {
       emit(state.copyWith(status: AddTaskStatus.failure));

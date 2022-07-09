@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasks_repository/tasks_repository.dart';
 import 'package:todo_app/new_task/add_task_page.dart';
 import 'package:todo_app/tasks_view/bloc/tasks_view_bloc.dart';
-import 'package:todo_app/tasks_view/task_page.dart';
+import 'package:todo_app/tasks_view/tasks_page.dart';
 
 import 'cubit/tab_view_cubit.dart';
 

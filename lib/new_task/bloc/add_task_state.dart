@@ -1,6 +1,6 @@
 part of 'add_task_bloc.dart';
 
-enum AddTaskStatus { initial, success, failure }
+enum AddTaskStatus { initial, valid, invalid, success, failure }
 
 class AddTaskState extends Equatable {
   const AddTaskState({

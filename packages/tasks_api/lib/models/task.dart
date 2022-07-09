@@ -27,5 +27,5 @@ class Task extends Equatable {
       );
 
   @override
-  List<Object?> get props => [title, body];
+  List<Object?> get props => [id, title, body, isDone];
 }

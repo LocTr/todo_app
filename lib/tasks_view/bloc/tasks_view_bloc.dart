@@ -11,6 +11,8 @@ class TasksViewBloc extends Bloc<TasksViewEvent, TasksViewState> {
       : _tasksRepository = tasksRepository,
         super(const TasksViewState()) {
     on<TasksViewLoadTask>(_onTasksViewLoadTask);
+    on<TasksViewCompleteToggled>(_onTasksViewCompleteToggled);
+    on<TasksViewFilterChanged>(_onTasksViewFilterChanged);
   }
 
   final TasksRepository _tasksRepository;
@@ -19,14 +21,20 @@ class TasksViewBloc extends Bloc<TasksViewEvent, TasksViewState> {
     TasksViewLoadTask event,
     Emitter<TasksViewState> emit,
   ) async {
-    List<Task> tasks = await _tasksRepository.getAllTasks();
-    emit(TasksViewState(tasks: tasks));
+    List<Task> tasks = await _tasksRepository.getTasks();
+    emit(state.copyWith(tasks: tasks));
   }
 
-  // Future<void> _onTasksViewCompleteToggled(
-  //   TasksViewCompleteToggled event,
-  //   Emitter<TasksViewState> emit,
-  // ) async {
-  //   _tasksRepository.saveTask(task)
-  // }
+  Future<void> _onTasksViewCompleteToggled(
+      TasksViewCompleteToggled event, Emitter<TasksViewState> emit) async {
+    await _tasksRepository
+        .updateTask(event.task.copyWith(isDone: event.isCompleted));
+  }
+
+  Future<void> _onTasksViewFilterChanged(
+    TasksViewFilterChanged event,
+    Emitter<TasksViewState> emit,
+  ) async {
+    emit(state.copyWith(filter: event.filter));
+  }
 }

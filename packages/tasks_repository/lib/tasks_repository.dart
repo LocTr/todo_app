@@ -12,16 +12,8 @@ class TasksRepository {
 
   final TasksApi _tasksApi;
 
-  Future<List<Task>> getAllTasks() {
-    return _tasksApi.getTask();
-  }
-
-  Future<List<Task>> getCompletedTasks() {
-    return _tasksApi.getTask();
-  }
-
-  Future<List<Task>> getUncompletedTasks() {
-    return _tasksApi.getTask();
+  Future<List<Task>> getTasks() {
+    return _tasksApi.getTasks();
   }
 
   Future<void> clearCompleted() async {
@@ -34,8 +26,13 @@ class TasksRepository {
     return;
   }
 
-  Future<void> saveTask(Task task) async {
-    _tasksApi.saveTask(task);
+  Future<void> newTask(Task task) async {
+    _tasksApi.newTask(task);
+    return;
+  }
+
+  Future<void> updateTask(Task task) async {
+    _tasksApi.updateTask(task);
     return;
   }
 }

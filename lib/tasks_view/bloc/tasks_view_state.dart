@@ -11,6 +11,16 @@ class TasksViewState extends Equatable {
 
   Iterable<Task> get filteredTasks => filter.applyAll(tasks);
 
+  TasksViewState copyWith({
+    List<Task>? tasks,
+    TasksViewFilter? filter,
+  }) {
+    return TasksViewState(
+      tasks: tasks ?? this.tasks,
+      filter: filter ?? this.filter,
+    );
+  }
+
   @override
-  List<Object> get props => [tasks, filter];
+  List<Object> get props => [tasks, filter, filteredTasks];
 }
