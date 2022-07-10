@@ -31,7 +31,7 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void _onItemTapped(int index) async {
-      if (index > HomeTab.values.length) {
+      if (index == HomeTab.values.length) {
         showModalBottomSheet<bool>(
             isScrollControlled: true,
             context: context,

@@ -3,8 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasks_repository/tasks_repository.dart';
 import 'package:todo_app/new_task/bloc/add_task_bloc.dart';
 
-const String errorTxt = 'Task cannot be empty';
-
 class AddTasksPage extends StatelessWidget {
   const AddTasksPage({Key? key}) : super(key: key);
 
@@ -33,13 +31,23 @@ class AddTaskDialog extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisSize: MainAxisSize.min,
         children: [
-          TextField(
-            onChanged: (value) {
-              context.read<AddTaskBloc>().add(AddTaskTitleChanged(value));
+          BlocBuilder<AddTaskBloc, AddTaskState>(
+            builder: (context, state) {
+              print(state.status);
+              final errorStr = (state.status == AddTaskStatus.failure)
+                  ? 'Error occured, please try again later'
+                  : null;
+              return TextField(
+                onChanged: (value) {
+                  context.read<AddTaskBloc>().add(AddTaskTitleChanged(value));
+                },
+                autofocus: true,
+                decoration: InputDecoration(
+                    hintText: 'New task',
+                    border: InputBorder.none,
+                    errorText: errorStr),
+              );
             },
-            autofocus: true,
-            decoration: const InputDecoration(
-                hintText: 'New task', border: InputBorder.none),
           ),
           TextField(
             onChanged: (value) {
@@ -48,19 +56,25 @@ class AddTaskDialog extends StatelessWidget {
             decoration: const InputDecoration(
                 hintText: 'Detail', border: InputBorder.none),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(
+            height: 16,
+          ),
           BlocBuilder<AddTaskBloc, AddTaskState>(
             builder: (context, state) {
-              return TextButton(
-                  onPressed: (state.status == AddTaskStatus.valid)
-                      ? () {
-                          context
-                              .read<AddTaskBloc>()
-                              .add(const AddTaskSubmitted());
-                          Navigator.pop(context, true);
-                        }
-                      : null,
-                  child: const Text('SAVE'));
+              return Column(
+                children: [
+                  TextButton(
+                      onPressed: (state.status == AddTaskStatus.valid ||
+                              state.status == AddTaskStatus.failure)
+                          ? () {
+                              context
+                                  .read<AddTaskBloc>()
+                                  .add(const AddTaskSubmitted());
+                            }
+                          : null,
+                      child: const Text('SAVE')),
+                ],
+              );
             },
           ),
           const SizedBox(height: 8),

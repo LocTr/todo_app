@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:tasks_repository/tasks_repository.dart';
+import 'package:todo_app/new_task/bloc/add_task_bloc.dart';
 import 'package:todo_app/tasks_view/models/tasks_view_filter.dart';
 
 part 'tasks_view_event.dart';
@@ -21,14 +22,22 @@ class TasksViewBloc extends Bloc<TasksViewEvent, TasksViewState> {
     TasksViewLoadTask event,
     Emitter<TasksViewState> emit,
   ) async {
-    List<Task> tasks = await _tasksRepository.getTasks();
-    emit(state.copyWith(tasks: tasks));
+    try {
+      List<Task> tasks = await _tasksRepository.getTasks();
+      emit(state.copyWith(tasks: tasks, status: TasksViewStatus.success));
+    } catch (e) {
+      emit(state.copyWith(status: TasksViewStatus.failure));
+    }
   }
 
   Future<void> _onTasksViewCompleteToggled(
       TasksViewCompleteToggled event, Emitter<TasksViewState> emit) async {
-    await _tasksRepository
-        .updateTask(event.task.copyWith(isDone: event.isCompleted));
+    try {
+      await _tasksRepository
+          .updateTask(event.task.copyWith(isDone: event.isCompleted));
+    } catch (e) {
+      emit(state.copyWith(status: TasksViewStatus.failure));
+    }
   }
 
   Future<void> _onTasksViewFilterChanged(

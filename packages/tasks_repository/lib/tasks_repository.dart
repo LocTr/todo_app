@@ -16,22 +16,22 @@ class TasksRepository {
   }
 
   Future<void> clearCompleted() async {
-    _tasksApi.clearCompleted();
+    await _tasksApi.clearCompleted();
     return;
   }
 
   Future<void> deleteTask(int id) async {
-    _tasksApi.deleteTask(id);
+    await _tasksApi.deleteTask(id);
     return;
   }
 
   Future<void> newTask(Task task) async {
-    _tasksApi.newTask(task);
+    await _tasksApi.newTask(task);
     return;
   }
 
   Future<void> updateTask(Task task) async {
-    _tasksApi.updateTask(task);
+    await _tasksApi.updateTask(task);
     return;
   }
 }

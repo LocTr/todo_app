@@ -20,7 +20,6 @@ class HiveTasksApi extends TasksApi {
   @override
   Future<List<Task>> getTasks() async {
     List<Task> list = [];
-
     for (var element in dataBox.values) {
       Task task = Task(
           id: element[HiveTaskData.id.index],

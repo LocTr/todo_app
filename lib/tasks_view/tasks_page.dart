@@ -12,26 +12,40 @@ class TasksPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<TabViewCubit, TabViewState>(
-      listener: (context, state) {
-        switch (state.currentTab) {
-          case HomeTab.all:
-            context.read<TasksViewBloc>().add(
-                  const TasksViewFilterChanged(filter: TasksViewFilter.all),
-                );
-            break;
-          case HomeTab.completed:
-            context.read<TasksViewBloc>().add(
-                  const TasksViewFilterChanged(filter: TasksViewFilter.done),
-                );
-            break;
-          case HomeTab.uncompleted:
-            context.read<TasksViewBloc>().add(
-                  const TasksViewFilterChanged(filter: TasksViewFilter.todo),
-                );
-            break;
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<TabViewCubit, TabViewState>(
+          listener: (context, state) {
+            switch (state.currentTab) {
+              case HomeTab.all:
+                context.read<TasksViewBloc>().add(
+                      const TasksViewFilterChanged(filter: TasksViewFilter.all),
+                    );
+                break;
+              case HomeTab.completed:
+                context.read<TasksViewBloc>().add(
+                      const TasksViewFilterChanged(
+                          filter: TasksViewFilter.done),
+                    );
+                break;
+              case HomeTab.uncompleted:
+                context.read<TasksViewBloc>().add(
+                      const TasksViewFilterChanged(
+                          filter: TasksViewFilter.todo),
+                    );
+                break;
+            }
+          },
+        ),
+        BlocListener<TasksViewBloc, TasksViewState>(
+          listener: (context, state) {
+            if (state.status == TasksViewStatus.failure) {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text('Error occured, please try again later!')));
+            }
+          },
+        ),
+      ],
       child: const TasksView(),
     );
   }
@@ -80,6 +94,7 @@ class TasksView extends StatelessWidget {
     List<Task> tasks =
         context.watch<TasksViewBloc>().state.filteredTasks.toList();
     if (tasks.isNotEmpty) return _taskList(tasks);
+
     return _noTaskScreen();
   }
 }

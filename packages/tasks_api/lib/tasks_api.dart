@@ -23,3 +23,5 @@ abstract class TasksApi {
 }
 
 class TaskNotFoundException implements Exception {}
+
+class DBException implements Exception {}

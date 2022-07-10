@@ -22,6 +22,7 @@ void main() {
 
       when(() => tasksRepository.getTasks())
           .thenAnswer((_) => Future.value(mockTasks));
+      when(() => tasksRepository.updateTask(any())).thenAnswer((_) async {});
     });
 
     setUpAll(() {
@@ -54,6 +55,33 @@ void main() {
         verify: (bloc) => verify(
           () => tasksRepository.getTasks(),
         ).called(1),
+      );
+    });
+
+    group(TasksViewCompleteToggled, () {
+      blocTest<TasksViewBloc, TasksViewState>(
+        'update selected task status',
+        build: buildBloc,
+        act: (bloc) => bloc.add(
+            const TasksViewCompleteToggled(task: mockTask1, isCompleted: true)),
+        verify: (bloc) => verify(() => tasksRepository.updateTask(any(
+              that: isA<Task>()
+                  .having((t) => t.title, 'title', equals(mockTask1.title))
+                  .having((t) => t.body, 'body', equals(mockTask1.body))
+                  .having((t) => t.isDone, 'isDone', equals(true)),
+            ))).called(1),
+      );
+    });
+
+    group('TasksViewFilterChanged', () {
+      blocTest<TasksViewBloc, TasksViewState>(
+        'update state when filter changed',
+        build: buildBloc,
+        act: (bloc) => bloc
+            .add(const TasksViewFilterChanged(filter: TasksViewFilter.done)),
+        expect: () => const <TasksViewState>[
+          TasksViewState(tasks: [], filter: TasksViewFilter.done)
+        ],
       );
     });
   });
