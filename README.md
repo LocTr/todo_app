@@ -13,11 +13,13 @@ this
 
 ## To run this app
 1. clone this repo
+2. Run this line in terminal to get dependencies
+   
+   `flutter pub get`
 
-2. Run this line in terminal
+3. Run this line in terminal to run the app
 
-    `flutter run`
-
+    `flutter run` <br/>
     or <br/> 
     `flutter run lib/main.dart`
 
