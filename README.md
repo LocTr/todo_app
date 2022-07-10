@@ -4,22 +4,24 @@ Manabie Mobile Tech Challenge
 
 ## Structure
 #### Data Access Layer
-`packages/tasks_api` <br/>
-`packages/packages/hive_tasks_api`
+`packages\tasks_api` <br/>
+`packages\packages\hive_tasks_api`
 #### Domain Layer
-`packages/tasks_repository`
+`packages\tasks_repository`
 #### Application Layer
 this
 
 ## To run this app
 1. clone this repo
+2. Run this line in terminal to get dependencies
+   
+   `flutter pub get`
 
-2. Run this line in terminal
+3. Run this line in terminal to run the app
 
-    `flutter run`
-
+    `flutter run` <br/>
     or <br/> 
-    `flutter run lib/main.dart`
+    `flutter run lib\main.dart`
 
 ## To test this app
 
