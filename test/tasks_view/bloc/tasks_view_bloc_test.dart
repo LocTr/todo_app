@@ -50,7 +50,10 @@ void main() {
         build: buildBloc,
         act: (bloc) => bloc.add(const TasksViewLoadTask()),
         expect: () => const <TasksViewState>[
-          TasksViewState(tasks: mockTasks, filter: TasksViewFilter.all),
+          TasksViewState(
+              tasks: mockTasks,
+              filter: TasksViewFilter.all,
+              status: TasksViewStatus.success),
         ],
         verify: (bloc) => verify(
           () => tasksRepository.getTasks(),
