@@ -4,10 +4,10 @@ Manabie Mobile Tech Challenge
 
 ## Structure
 #### Data Access Layer
-`packages/tasks_api` <br/>
-`packages/packages/hive_tasks_api`
+`packages\tasks_api` <br/>
+`packages\packages\hive_tasks_api`
 #### Domain Layer
-`packages/tasks_repository`
+`packages\tasks_repository`
 #### Application Layer
 this
 
@@ -21,7 +21,7 @@ this
 
     `flutter run` <br/>
     or <br/> 
-    `flutter run lib/main.dart`
+    `flutter run lib\main.dart`
 
 ## To test this app
 
