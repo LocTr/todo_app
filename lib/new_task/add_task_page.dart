@@ -11,6 +11,23 @@ class AddTasksPage extends StatelessWidget {
     return BlocProvider(
       create: (context) =>
           AddTaskBloc(tasksRepository: context.read<TasksRepository>()),
+      child: const AddTasksView(),
+    );
+  }
+}
+
+class AddTasksView extends StatelessWidget {
+  const AddTasksView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<AddTaskBloc, AddTaskState>(
+      listenWhen: (previous, current) =>
+          previous.status != current.status &&
+          current.status == AddTaskStatus.success,
+      listener: (context, state) {
+        Navigator.of(context).pop(true);
+      },
       child: const AddTaskDialog(),
     );
   }
@@ -33,7 +50,6 @@ class AddTaskDialog extends StatelessWidget {
         children: [
           BlocBuilder<AddTaskBloc, AddTaskState>(
             builder: (context, state) {
-              print(state.status);
               final errorStr = (state.status == AddTaskStatus.failure)
                   ? 'Error occured, please try again later'
                   : null;

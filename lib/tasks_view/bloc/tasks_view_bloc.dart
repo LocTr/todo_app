@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:tasks_repository/tasks_repository.dart';
-import 'package:todo_app/new_task/bloc/add_task_bloc.dart';
 import 'package:todo_app/tasks_view/models/tasks_view_filter.dart';
 
 part 'tasks_view_event.dart';

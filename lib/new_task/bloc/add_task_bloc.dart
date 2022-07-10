@@ -54,7 +54,6 @@ class AddTaskBloc extends Bloc<AddTaskEvent, AddTaskState> {
       await _tasksRepository.newTask(task);
       emit(state.copyWith(status: AddTaskStatus.success));
     } catch (e) {
-      print('catched error here');
       emit(state.copyWith(status: AddTaskStatus.failure));
     }
   }
