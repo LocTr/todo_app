@@ -4,7 +4,6 @@ import 'package:tasks_api/tasks_api.dart';
 
 export 'package:tasks_api/tasks_api.dart' show Task;
 
-/// A Calculator.
 class TasksRepository {
   const TasksRepository({
     required TasksApi tasksApi,

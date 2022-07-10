@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasks_api/models/task.dart';
-import 'package:todo_app/tasks_view/bloc/tasks_view_bloc.dart';
 
 class TaskCard extends StatelessWidget {
   const TaskCard({
     Key? key,
     required this.task,
+    required this.onToggleCheckBox,
   }) : super(key: key);
 
   final Task task;
+  final Function(bool?)? onToggleCheckBox;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -22,18 +22,9 @@ class TaskCard extends StatelessWidget {
               SizedBox(
                 width: 48,
                 child: Checkbox(
-                    value: task.isDone,
-                    onChanged: (val) async {
-                      context
-                          .read<TasksViewBloc>()
-                          .add(TasksViewCompleteToggled(
-                            task: task,
-                            isCompleted: val ?? false,
-                          ));
-                      context
-                          .read<TasksViewBloc>()
-                          .add(const TasksViewLoadTask());
-                    }),
+                  value: task.isDone,
+                  onChanged: onToggleCheckBox,
+                ),
               ),
               Text(
                 task.title,

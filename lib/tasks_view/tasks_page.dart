@@ -30,8 +30,6 @@ class TasksPage extends StatelessWidget {
                   const TasksViewFilterChanged(filter: TasksViewFilter.todo),
                 );
             break;
-          case HomeTab.add:
-            break;
         }
       },
       child: const TasksView(),
@@ -44,33 +42,44 @@ class TasksView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget _noTaskScreen() {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const <Widget>[
+            Icon(Icons.close),
+            Text(
+              'There is no task yet',
+            ),
+          ],
+        ),
+      );
+    }
+
+    Widget _taskList(List<Task> tasks) {
+      return ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 32),
+          children: tasks
+              .map((task) => TaskCard(
+                    task: task,
+                    onToggleCheckBox: (val) {
+                      context
+                          .read<TasksViewBloc>()
+                          .add(TasksViewCompleteToggled(
+                            task: task,
+                            isCompleted: val ?? false,
+                          ));
+                      context
+                          .read<TasksViewBloc>()
+                          .add(const TasksViewLoadTask());
+                    },
+                  ))
+              .toList());
+    }
+
     List<Task> tasks =
         context.watch<TasksViewBloc>().state.filteredTasks.toList();
     if (tasks.isNotEmpty) return _taskList(tasks);
     return _noTaskScreen();
   }
-}
-
-Widget _noTaskScreen() {
-  return Center(
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: const <Widget>[
-        Icon(Icons.close),
-        Text(
-          'There is no task yet',
-        ),
-      ],
-    ),
-  );
-}
-
-Widget _taskList(List<Task> tasks) {
-  return ListView(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 32),
-      children: tasks
-          .map((task) => TaskCard(
-                task: task,
-              ))
-          .toList());
 }

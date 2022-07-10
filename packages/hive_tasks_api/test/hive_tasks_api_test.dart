@@ -1,12 +1,108 @@
-// import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:hive/hive.dart';
 
-// import 'package:hive_tasks_api/hive_tasks_api.dart';
+import 'package:hive_tasks_api/hive_tasks_api.dart';
+import 'package:tasks_api/tasks_api.dart';
 
-// void main() {
-//   test('adds one to input values', () {
-//     final calculator = Calculator();
-//     expect(calculator.addOne(2), 3);
-//     expect(calculator.addOne(-7), -6);
-//     expect(calculator.addOne(0), 1);
-//   });
-// }
+void main() async {
+  Hive.init('test/hivedb');
+  Box box = await Hive.openBox('testTasksBox');
+  TasksApi api = HiveTasksApi(dataBox: box);
+  //init value
+  const initialTasks = [
+    Task(
+      title: 'test object 0',
+      body: 'test object body 0',
+      isDone: false,
+    ),
+    Task(
+      title: 'test object 1',
+      body: 'test object 1',
+      isDone: false,
+    ),
+    Task(
+      title: 'test object 2',
+      body: 'test object body 2',
+      isDone: true,
+    ),
+  ];
+  await api.deleteAllTask();
+  for (var task in initialTasks) {
+    await api.newTask(task);
+  }
+
+  group('CRUD hive', () {
+    test('read initial', () async {
+      var tasks = await api.getTasks();
+      expect(tasks.length, equals(3));
+
+      expect(tasks[0].title, initialTasks[0].title);
+      expect(tasks[0].body, initialTasks[0].body);
+      expect(tasks[0].isDone, initialTasks[0].isDone);
+
+      expect(tasks[1].title, initialTasks[1].title);
+      expect(tasks[1].body, initialTasks[1].body);
+      expect(tasks[1].isDone, initialTasks[1].isDone);
+
+      expect(tasks[2].title, initialTasks[2].title);
+      expect(tasks[2].body, initialTasks[2].body);
+      expect(tasks[2].isDone, initialTasks[2].isDone);
+    });
+
+    test('Add new tasks', () async {
+      const newTask = Task(
+        title: 'new test object',
+        body: 'new test object',
+        isDone: false,
+      );
+
+      await api.newTask(newTask);
+      final tasks = await api.getTasks();
+      expect(tasks.length, equals(4));
+
+      expect(tasks.last.title, newTask.title);
+      expect(tasks.last.body, newTask.body);
+      expect(tasks.last.isDone, newTask.isDone);
+    });
+
+    test('update last task', () async {
+      var tasks = await api.getTasks();
+
+      const expectedTitle = 'Test update title';
+      const expectedBody = 'Test update body';
+      const expectedIsDone = true;
+
+      await api.updateTask(tasks.last.copyWith(
+        title: expectedTitle,
+        body: expectedBody,
+        isDone: expectedIsDone,
+      ));
+      tasks = await api.getTasks();
+      expect(tasks.length, equals(4));
+
+      expect(tasks.last.title, expectedTitle);
+      expect(tasks.last.body, expectedBody);
+      expect(tasks.last.isDone, expectedIsDone);
+    });
+
+    test('delete second task', () async {
+      await api.deleteTask(1);
+      var tasks = await api.getTasks();
+
+      expect(tasks.length, 3);
+
+      expect(tasks[0].title, initialTasks[0].title);
+      expect(tasks[0].body, initialTasks[0].body);
+      expect(tasks[0].isDone, initialTasks[0].isDone);
+
+      expect(tasks[1].title, initialTasks[2].title);
+      expect(tasks[1].body, initialTasks[2].body);
+      expect(tasks[1].isDone, initialTasks[2].isDone);
+    });
+
+    test('Remove all tasks', () async {
+      await api.deleteAllTask();
+      expect(box.values, isEmpty);
+    });
+  });
+}

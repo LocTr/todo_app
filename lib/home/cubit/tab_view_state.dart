@@ -4,7 +4,6 @@ enum HomeTab {
   all,
   completed,
   uncompleted,
-  add,
 }
 
 class TabViewState extends Equatable {

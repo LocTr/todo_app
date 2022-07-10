@@ -5,7 +5,7 @@ enum AddTaskStatus { initial, valid, invalid, success, failure }
 class AddTaskState extends Equatable {
   const AddTaskState({
     required this.title,
-    required this.body,
+    this.body = '',
     this.status = AddTaskStatus.initial,
   });
 
