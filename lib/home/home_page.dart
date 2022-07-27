@@ -1,27 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tasks_repository/tasks_repository.dart';
 import 'package:todo_app/new_task/add_task_page.dart';
-import 'package:todo_app/tasks_view/bloc/tasks_view_bloc.dart';
 import 'package:todo_app/tasks_view/tasks_page.dart';
-
-import 'cubit/tab_view_cubit.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<TabViewCubit>(create: (context) => TabViewCubit()),
-        BlocProvider<TasksViewBloc>(
-            create: (context) => TasksViewBloc(
-                  tasksRepository: context.read<TasksRepository>(),
-                )..add(const TasksViewLoadTask())),
-      ],
-      child: const HomeView(),
-    );
+    return const HomeView();
   }
 }
 
@@ -31,19 +17,19 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void _onItemTapped(int index) async {
-      if (index == HomeTab.values.length) {
-        showModalBottomSheet<bool>(
-            isScrollControlled: true,
-            context: context,
-            builder: (context) {
-              return const AddTasksPage();
-            }).then((value) => {
-              if (value == true)
-                {context.read<TasksViewBloc>().add(const TasksViewLoadTask())}
-            });
-      } else {
-        context.read<TabViewCubit>().setTab(HomeTab.values[index]);
-      }
+      // if (index == HomeTab.values.length) {
+      //   showModalBottomSheet<bool>(
+      //       isScrollControlled: true,
+      //       context: context,
+      //       builder: (context) {
+      //         return const AddTasksPage();
+      //       }).then((value) => {
+      //         if (value == true)
+      //           {context.read<TasksViewBloc>().add(const TasksViewLoadTask())}
+      //       });
+      // } else {
+      //   context.read<TabViewCubit>().setTab(HomeTab.values[index]);
+      // }
     }
 
     return Scaffold(
@@ -61,7 +47,6 @@ class HomeView extends StatelessWidget {
           BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Add task'),
         ],
         onTap: _onItemTapped,
-        currentIndex: context.watch<TabViewCubit>().state.currentTab.index,
       ),
     );
   }

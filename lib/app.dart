@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasks_repository/tasks_repository.dart';
 
 import 'home/home_page.dart';
@@ -13,10 +12,7 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider.value(
-      value: repository,
-      child: const AppView(),
-    );
+    return const AppView();
   }
 }
 
